@@ -1,0 +1,68 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Participants</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'event' %}">Events</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'event' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_event' %}">Add Events</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add_participant' %}">Add Participants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'participants' %}">Participants</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+    <h3>View Participants</h3>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Participant Name</th>
+            <th scope="col">Participant Email</th>
+            <th scope="col">Event Attending</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for d in participant %}
+            <tr>
+                <td>{{ d.name }}</td>
+                <td>{{ d.email }}</td>
+                <td>
+                    {% for event in d.events.all %}
+                        {{ event.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="/delete_participant/{{ d.id }}">Delete</a>
+                    <a class="btn btn-info" href="/update_participant/{{ d.id }}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
